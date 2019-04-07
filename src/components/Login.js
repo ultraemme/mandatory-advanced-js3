@@ -22,9 +22,11 @@ class Login extends Component {
       })
       .catch(err => {
         if(axios.isCancel(err)) {
-          console.log('Canceled the request to login.');
+          console.error('Canceled the request to login.');
+        } else if (err.response) {
+          console.log(err.response.data)
         } else {
-          console.log('Real error! -> ', err)
+          console.log(err)
         }
       })
   }

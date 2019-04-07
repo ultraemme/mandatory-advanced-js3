@@ -14,15 +14,17 @@ class Register extends Component {
   handleRegister(e) {
     e.preventDefault();
     const API_ROOT = 'http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000';
-    axios.post(API_ROOT + '/register', {email: 'exafdsa8u7yfdsample@example.com', password: 'example'}, {cancelToken: this.source.token})
+    axios.post(API_ROOT + '/register', {email: 'example@example.com', password: 'example'}, {cancelToken: this.source.token})
       .then(res => {
         this.setState({registered: true});
       })
       .catch(err => {
         if(axios.isCancel(err)) {
           console.log('Canceled the request to register.');
+        } else if (err.response) {
+          console.log(err.response.data)
         } else {
-          console.log('Real error! -> ', err)
+          console.log(err)
         }
       })
   }
