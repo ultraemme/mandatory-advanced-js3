@@ -10,14 +10,14 @@ import jwt from 'jsonwebtoken';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {username: null}
+    this.state = {email: null}
   }
 
   componentDidMount () {
     this.subscription = token$.subscribe(value => {
       const decoded = jwt.decode(value);
       if(decoded) {
-        this.setState({username: decoded.email})
+        this.setState({email: decoded.email})
       }
     })
   }
@@ -27,7 +27,7 @@ class App extends Component {
   }
 
   handleLogout() {
-    this.setState({username: null});
+    this.setState({email: null});
     //remove token
     //make sure you can't go to profile
   }
@@ -37,9 +37,9 @@ class App extends Component {
       <Router>
         <div className={styles.App}>
           <header className={styles.header}>
-          { this.state.username ?
+          { this.state.email ?
             <>
-              <span className={styles.header__username}>{this.state.username}</span>
+              <span className={styles.header__username}>{this.state.email}</span>
               <div className={styles.header__nav}>
                 <i onClick={this.handleLogout.bind(this)} className={styles.header__link}><Link to="/">Sign out</Link></i>
               </div>

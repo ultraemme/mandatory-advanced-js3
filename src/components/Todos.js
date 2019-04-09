@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
 import { token$ } from '../Store';
 
 class Todos extends Component {
@@ -23,10 +22,11 @@ class Todos extends Component {
     axios.get(API_ROOT + '/todos', options)
       .then(res => {
         this.setState({todos: res.data.todos})
-        console.log(this.state.todos);
       })
       .catch(err => {
-        console.log(err);
+        if(axios.isCancel(err)) {
+          console.error('Canceled the request to fetch tasks.');
+        }
       })
   }
 
@@ -37,21 +37,31 @@ class Todos extends Component {
   postTodo(e) {
     e.preventDefault();
     const API_ROOT = 'http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000';
+    const data = {
+      content: this.state.newTodo
+    }
     const options = {
+      cancelToken: this.source.token,
       headers: {
         Authorization: `Bearer ${token$.value}`
       }
     }
-    axios.post(API_ROOT + "/todos", {content: this.state.newTodo}, options)
+    axios.post(API_ROOT + "/todos", data, options)
       .then(res => {
         const todos = this.state.todos;
         todos.push(res.data.todo);
         this.setState({todos});
-        console.log(this.state.todos);
-        console.log(res);
       })
       .catch(err => {
-
+        if(axios.isCancel(err)) {
+          console.error('Canceled the request to add a task.');
+        } else if(err.response) {
+          if (err.response.data.details) {
+            this.setState({err: err.response.data.details[0].message})
+          } else {
+            this.setState({err: err.response.data.message});
+          }
+        }
       })
   }
 
@@ -60,6 +70,7 @@ class Todos extends Component {
     const id = e.target.parentNode.id;
     const API_ROOT = 'http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000';
     const options = {
+      cancelToken: this.source.token,
       headers: {
         Authorization: `Bearer ${token$.value}`
       }
@@ -67,15 +78,15 @@ class Todos extends Component {
     axios.delete(API_ROOT + "/todos/" + id, options)
       .then(res => {
         const todos = this.state.todos.filter(todo => {
-          console.log(todo);
           return todo.id !== id;
         })
         this.setState({todos})
-        console.log(res)
-      });
-
-    console.log(e.nativeEvent);
-    console.log(e.target.parentNode.id);
+      })
+      .catch(err => {
+        if(axios.isCancel(err)) {
+          console.error('Canceled the request to delete a task.');
+        }
+      })
   }
 
   handleChange(e) {
@@ -84,7 +95,6 @@ class Todos extends Component {
 
   render() {
     const todos = this.state.todos.map(todo => {
-      console.log(todo);
       return (
         <li id={todo.id} key={todo.id}>{todo.content}
           <button onClick={this.deleteTodo.bind(this)}>Delete</button>
@@ -98,10 +108,12 @@ class Todos extends Component {
         </Helmet>
         <>
           <form action="" onSubmit={this.postTodo.bind(this)}>
-            <label htmlFor="">Todo:</label><br/>
+            <label htmlFor="">Task content:</label><br/>
             <input onChange={this.handleChange.bind(this)} id="newTodo" type="text"/><br/><br/>
-            <button type="submit">Add todo</button>
+            <button type="submit">Add task</button>
           </form>
+          <br/>
+          {this.state.err ? <span>{this.state.err}</span> : null}
           <br/><br/>
           <ul>
             {todos}

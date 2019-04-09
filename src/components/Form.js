@@ -5,7 +5,7 @@ class Form extends Component {
     return (
       <form action="" onSubmit={this.props.handleSubmit}>
         <label htmlFor="">Email:</label><br/>
-        <input onChange={this.props.handleChange} id="username" type="text"/><br/><br/>
+        <input onChange={this.props.handleChange} id="email" type="text"/><br/><br/>
         <label htmlFor="">Password:</label><br/>
         <input onChange={this.props.handleChange} id="password" type="password"/><br/><br/>
         <button type="submit">Login</button>

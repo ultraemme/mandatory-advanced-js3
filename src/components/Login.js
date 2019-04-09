@@ -8,17 +8,16 @@ import Form from './Form';
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {username: "example@example.com", password: "example", loggedIn: false};
+    this.state = {email: "example@example.com", password: "example", loggedIn: false};
     this.CancelToken = axios.CancelToken;
     this.source = this.CancelToken.source();
   }
 
   handleLogin(e) {
     e.preventDefault();
-    console.log(this.state);
     const API_ROOT = 'http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000';
     const data = {
-      email: this.state.username,
+      email: this.state.email,
       password: this.state.password
     }
     const options = {cancelToken: this.source.token}

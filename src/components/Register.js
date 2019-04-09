@@ -16,7 +16,7 @@ class Register extends Component {
     e.preventDefault();
     const API_ROOT = 'http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000';
     const data = {
-      email: this.state.username,
+      email: this.state.email,
       password: this.state.password
     }
     const options = {cancelToken: this.source.token}
@@ -26,7 +26,7 @@ class Register extends Component {
       })
       .catch(err => {
         if(axios.isCancel(err)) {
-          console.log('Canceled the request to register.');
+          console.error('Canceled the request to register.');
         } else if (err.response) {
           console.log(err.response);
           if (err.response.data.details) {
