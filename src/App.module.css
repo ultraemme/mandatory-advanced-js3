@@ -1,0 +1,24 @@
+.App {
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #D8D8D8;
+  height: 8vh;
+  font-size: 24px;
+}
+
+.header__username {
+  padding-left: 20px;
+}
+
+.header__nav {
+ padding-right: 5px;
+}
+
+.header__link {
+  padding: 0 15px 0 15px;
+}

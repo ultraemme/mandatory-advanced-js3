@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import {Helmet} from 'react-helmet';
-import {Redirect} from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
+import Form from './Form';
 
 class Register extends Component {
   constructor(props) {
@@ -14,7 +15,12 @@ class Register extends Component {
   handleRegister(e) {
     e.preventDefault();
     const API_ROOT = 'http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000';
-    axios.post(API_ROOT + '/register', {email: 'example@example.com', password: 'example'}, {cancelToken: this.source.token})
+    const data = {
+      email: this.state.username,
+      password: this.state.password
+    }
+    const options = {cancelToken: this.source.token}
+    axios.post(API_ROOT + '/register', data, options)
       .then(res => {
         this.setState({registered: true});
       })
@@ -22,11 +28,20 @@ class Register extends Component {
         if(axios.isCancel(err)) {
           console.log('Canceled the request to register.');
         } else if (err.response) {
-          console.log(err.response.data)
+          console.log(err.response);
+          if (err.response.data.details) {
+            this.setState({err: err.response.data.details[0].message})
+          } else {
+            this.setState({err: err.response.data.message});
+          }
         } else {
           console.log(err)
         }
       })
+  }
+
+  handleChange(e) {
+    this.setState({[e.target.id]: e.target.value});
   }
 
   componentWillUnmount () {
@@ -36,7 +51,7 @@ class Register extends Component {
   render() {
     if (this.state.registered) {
       return (
-        <Redirect to="/login"/>
+        <Redirect to="/"/>
       )
     } else {
       return (
@@ -45,7 +60,8 @@ class Register extends Component {
             <title>Register</title>
           </Helmet>
           <>
-            <button onClick={this.handleRegister.bind(this)}>Register</button>
+            <Form handleChange={this.handleChange.bind(this)} handleSubmit={this.handleRegister.bind(this)}/>
+            {this.state.err ? <span>{this.state.err}</span> : null}
           </>
         </>
       );
