@@ -9,6 +9,7 @@ class Todos extends Component {
     this.state = {newTodo: '', todos: []};
     this.CancelToken = axios.CancelToken;
     this.source = this.CancelToken.source();
+    this.inputTodo = React.createRef();
   }
 
   componentDidMount () {
@@ -36,6 +37,7 @@ class Todos extends Component {
 
   postTodo(e) {
     e.preventDefault();
+    this.inputTodo.current.value = "";
     const API_ROOT = 'http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000';
     const data = {
       content: this.state.newTodo
@@ -58,8 +60,10 @@ class Todos extends Component {
         } else if(err.response) {
           if (err.response.data.details) {
             this.setState({err: err.response.data.details[0].message})
-          } else {
+          } else if (err.response.data.message) {
             this.setState({err: err.response.data.message});
+          } else {
+            this.setState({err: "something went wrong, please try again"});
           }
         }
       })
@@ -102,7 +106,7 @@ class Todos extends Component {
         <>
           <form className="form form--todo" action="" onSubmit={this.postTodo.bind(this)}>
             <label className="form__text" htmlFor="">CONTENT:</label><br/>
-            <input className="form__input" onChange={this.handleChange.bind(this)} id="newTodo" type="text"/><br/><br/>
+            <input ref={this.inputTodo} className="form__input" onChange={this.handleChange.bind(this)} id="newTodo" type="text"/><br/><br/>
             <button className="form__submit" type="submit">ADD TASK</button>
           </form>
           {this.state.err ? <span className="errmsg">{this.state.err}!</span> : null}

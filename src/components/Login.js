@@ -30,11 +30,12 @@ class Login extends Component {
         if(axios.isCancel(err)) {
           console.error('Canceled the request to login.');
         } else if (err.response) {
-          console.log(err.response);
           if (err.response.data.details) {
             this.setState({err: err.response.data.details[0].message})
-          } else {
+          } else if (err.response.data.message) {
             this.setState({err: err.response.data.message});
+          } else {
+            this.setState({err: "something went wrong, please try again"});
           }
         } else {
           console.log(err)
@@ -44,7 +45,6 @@ class Login extends Component {
 
   handleChange(e) {
     this.setState({[e.target.id]: e.target.value})
-    console.log(this.state);
   }
 
   componentWillUnmount () {
