@@ -8,7 +8,7 @@ import Form from './Form';
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {email: "example@example.com", password: "example", loggedIn: false};
+    this.state = {email: "", password: "", loggedIn: false};
     this.CancelToken = axios.CancelToken;
     this.source = this.CancelToken.source();
   }
