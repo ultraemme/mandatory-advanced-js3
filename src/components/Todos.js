@@ -6,7 +6,7 @@ import { token$ } from '../Store';
 class Todos extends Component {
   constructor(props) {
     super(props);
-    this.state = {newTodo: "", todos: []};
+    this.state = {newTodo: '', todos: []};
     this.CancelToken = axios.CancelToken;
     this.source = this.CancelToken.source();
   }
@@ -50,7 +50,7 @@ class Todos extends Component {
       .then(res => {
         const todos = this.state.todos;
         todos.push(res.data.todo);
-        this.setState({todos});
+        this.setState({todos, err: null});
       })
       .catch(err => {
         if(axios.isCancel(err)) {
@@ -100,19 +100,19 @@ class Todos extends Component {
           <title>Todos</title>
         </Helmet>
         <>
-          <form action="" onSubmit={this.postTodo.bind(this)}>
-            <label htmlFor="">Task content:</label><br/>
-            <input onChange={this.handleChange.bind(this)} id="newTodo" type="text"/><br/><br/>
-            <button type="submit">Add task</button>
+          <form className="form form--todo" action="" onSubmit={this.postTodo.bind(this)}>
+            <label className="form__text" htmlFor="">CONTENT:</label><br/>
+            <input className="form__input" onChange={this.handleChange.bind(this)} id="newTodo" type="text"/><br/><br/>
+            <button className="form__submit" type="submit">ADD TASK</button>
           </form>
+          {this.state.err ? <span className="errmsg">{this.state.err}!</span> : null}
           <br/>
-          {this.state.err ? <span>{this.state.err}</span> : null}
           <br/><br/>
           <ul>
             {this.state.todos.map(todo => {
               return (
-              <li id={todo.id} key={todo.id}>{todo.content}
-                <button onClick={this.deleteTodo.bind(this)}>Delete</button>
+              <li className="todo__item" id={todo.id} key={todo.id}><span className="todo__text">{todo.content}</span>
+                <i className="todo__remove" onClick={this.deleteTodo.bind(this)}>&times;</i>
               </li>
               )
             })}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './App.module.css';
+import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
@@ -34,28 +34,30 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <div className={styles.App}>
-          <header className={styles.header}>
+        <div className="App">
+          <header className="header">
           { this.state.email ?
             <>
-              <span className={styles.header__username}>{this.state.email}</span>
-              <div className={styles.header__nav}>
-                <i onClick={this.handleLogout.bind(this)} className={styles.header__link}><Link to="/">Sign out</Link></i>
+              <span className="header__username">Logged in as: <strong>{this.state.email}</strong></span>
+              <div className="header__nav">
+                <i onClick={this.handleLogout.bind(this)}><Link className="header__link" to="/">SIGN OUT</Link></i>
               </div>
             </>
             :
             <>
-              <span className={styles.header__username}></span>
-              <div className={styles.header__nav}>
-                <i className={styles.header__link}><Link to="/register">Register</Link></i>
-                <i className={styles.header__link}><Link to="/">Sign in</Link></i>
+              <span className="header__username"></span>
+              <div className="header__nav">
+                <i><Link className="header__link" to="/register">REGISTER</Link></i>
+                <i><Link className="header__link" to="/">SIGN IN</Link></i>
               </div>
             </>
           }
           </header>
-          <Route exact path="/" component={Login}/>
-          <Route path="/register" component={Register}/>
-          <Route path="/todos" component={Todos}/>
+          <main>
+            <Route exact path="/" component={Login}/>
+            <Route path="/register" component={Register}/>
+            <Route path="/todos" component={Todos}/>
+          </main>
         </div>
       </Router>
     );

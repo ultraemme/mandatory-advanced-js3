@@ -63,8 +63,9 @@ class Login extends Component {
             <title>Login</title>
           </Helmet>
           <>
-            <Form handleChange={this.handleChange.bind(this)} handleSubmit={this.handleLogin.bind(this)}/>
-            {this.state.err ? <span>{this.state.err}</span> : null}
+            <Form formType={"SIGN IN"} handleChange={this.handleChange.bind(this)} handleSubmit={this.handleLogin.bind(this)}/>
+            {this.state.err ? <span className="errmsg">{this.state.err}!</span> : null}
+            {this.props.location.state ? <span className="successmsg">{this.props.location.state.regmsg}</span> : null}
           </>
         </>
       );

@@ -51,7 +51,11 @@ class Register extends Component {
   render() {
     if (this.state.registered) {
       return (
-        <Redirect to="/"/>
+        <Redirect to={{
+          pathname: '/',
+          state: { regmsg: "you successfully registered, please log in!" }
+        }}
+        />
       )
     } else {
       return (
@@ -60,8 +64,8 @@ class Register extends Component {
             <title>Register</title>
           </Helmet>
           <>
-            <Form handleChange={this.handleChange.bind(this)} handleSubmit={this.handleRegister.bind(this)}/>
-            {this.state.err ? <span>{this.state.err}</span> : null}
+            <Form formType={"REGISTER"} handleChange={this.handleChange.bind(this)} handleSubmit={this.handleRegister.bind(this)}/>
+            {this.state.err ? <span className="errmsg">{this.state.err}!</span> : null}
           </>
         </>
       );
