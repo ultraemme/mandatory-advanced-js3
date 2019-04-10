@@ -105,7 +105,7 @@ class Todos extends Component {
         </Helmet>
         <>
           <form className="form form--todo" action="" onSubmit={this.postTodo.bind(this)}>
-            <label className="form__text" htmlFor="">CONTENT:</label><br/>
+            <label className="form__text" htmlFor="">CONTENT</label><br/>
             <input ref={this.inputTodo} className="form__input" onChange={this.handleChange.bind(this)} id="newTodo" type="text"/><br/><br/>
             <button className="form__submit" type="submit">ADD TASK</button>
           </form>
