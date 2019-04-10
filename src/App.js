@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Todos from './components/Todos';
-import { token$ } from './Store';
+import { token$, removeToken } from './Store';
 import jwt from 'jsonwebtoken';
 
 class App extends Component {
@@ -27,9 +27,8 @@ class App extends Component {
   }
 
   handleLogout() {
+    removeToken();
     this.setState({email: null});
-    //remove token
-    //make sure you can't go to profile
   }
 
   render() {

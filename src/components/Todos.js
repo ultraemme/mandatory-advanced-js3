@@ -94,13 +94,6 @@ class Todos extends Component {
   }
 
   render() {
-    const todos = this.state.todos.map(todo => {
-      return (
-        <li id={todo.id} key={todo.id}>{todo.content}
-          <button onClick={this.deleteTodo.bind(this)}>Delete</button>
-        </li>
-      )
-    })
     return (
       <>
         <Helmet>
@@ -116,7 +109,13 @@ class Todos extends Component {
           {this.state.err ? <span>{this.state.err}</span> : null}
           <br/><br/>
           <ul>
-            {todos}
+            {this.state.todos.map(todo => {
+              return (
+              <li id={todo.id} key={todo.id}>{todo.content}
+                <button onClick={this.deleteTodo.bind(this)}>Delete</button>
+              </li>
+              )
+            })}
           </ul>
         </>
       </>
