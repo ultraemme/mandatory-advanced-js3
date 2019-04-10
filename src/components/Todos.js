@@ -37,7 +37,6 @@ class Todos extends Component {
 
   postTodo(e) {
     e.preventDefault();
-    this.inputTodo.current.value = "";
     const API_ROOT = 'http://ec2-13-53-32-89.eu-north-1.compute.amazonaws.com:3000';
     const data = {
       content: this.state.newTodo
@@ -51,6 +50,7 @@ class Todos extends Component {
     axios.post(API_ROOT + "/todos", data, options)
       .then(res => {
         const todos = this.state.todos;
+        this.inputTodo.current.value = "";
         todos.push(res.data.todo);
         this.setState({todos, err: null});
       })
